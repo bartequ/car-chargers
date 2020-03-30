@@ -10,7 +10,7 @@ public class Charger {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NotBlank
     private String name;
@@ -28,13 +28,13 @@ public class Charger {
     private String address;
 
     @NotNull
-    private Integer rating;
+    private float rating;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -78,11 +78,11 @@ public class Charger {
         this.address = address;
     }
 
-    public Integer getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 }

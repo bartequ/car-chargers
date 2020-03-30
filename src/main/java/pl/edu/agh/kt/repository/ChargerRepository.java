@@ -4,10 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pl.edu.agh.kt.model.Charger;
 
-import java.util.Optional;
-
 @Repository
-public interface ChargerRepository extends JpaRepository<Charger, Long> {
+public interface ChargerRepository extends JpaRepository<Charger, Integer> {
 
-     Optional<Charger> findByLatitudeAndLongitude(double latitude, double longitude);
+//     Optional<List<Charger>> findInArea(double latitude, double longitude);
 }

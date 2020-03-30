@@ -8,14 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import pl.edu.agh.kt.exception.CannotBuildAddress;
 import pl.edu.agh.kt.exception.CannotFetchAddressInfo;
 import pl.edu.agh.kt.exception.ResourceNotFound;
 import pl.edu.agh.kt.model.Charger;
-import pl.edu.agh.kt.model.ChargerCoordinates;
 import pl.edu.agh.kt.model.ChargerDetails;
 import pl.edu.agh.kt.repository.ChargerRepository;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -28,22 +27,22 @@ public class ChargerService {
         this.chargerRepository = chargerRepository;
     }
 
-    public Charger addCharger(Charger charger) {
-        return chargerRepository.save(charger);
+    public int addCharger(Charger charger) {
+        chargerRepository.save(charger);
+        return charger.getId();
     }
 
-    public ChargerDetails getChargerDetails(long id)  {
+    public ChargerDetails getChargerDetails(int id)  {
         return chargerRepository
                 .findById(id)
                 .map(c -> new ChargerDetails(c.getId(), c.getAddress(), c.getRating(), c.getName(), c.getCost()))
                 .orElseThrow(() -> new ResourceNotFound("Resource not found with id " + id));
     }
 
-    public ChargerCoordinates getChargerIdByCoordinates(double latitude, double longitude) {
-        return chargerRepository
-                .findByLatitudeAndLongitude(latitude, longitude)
-                .map(c -> new ChargerCoordinates(c.getId(), c.getLatitude(), c.getLongitude()))
-                .orElseThrow( () -> new ResourceNotFound("Resource not found with lat: " + latitude + "and lon:" + longitude));
+    public List<Charger> getChargerIdInArea(double latitude, double longitude) {
+        List<Charger> list = chargerRepository.findAll();
+        list.removeIf(charger -> (getDistance(charger, latitude, longitude) > 0.5));
+        return list;
     }
 
     public String localizeAddress(double latitude, double longitude) throws Exception {
@@ -71,8 +70,13 @@ public class ChargerService {
             if (address.get("address29") != null)
                 return buildAddress(address, "city", "pedestrian", "address29");
             return buildAddress(address, "city", "pedestrian");
+        } else if (address.get("town") != null && address.get("road") != null) {
+            if (address.get("address29") != null)
+                return buildAddress(address, "town", "pedestrian", "address29");
+            return buildAddress(address, "town", "road");
+        } else {
+            return "Unknown place";
         }
-        throw new CannotBuildAddress("Cannot translate coordinates into addres");
     }
 
     private String buildAddress(JsonNode address, String x, String y) {
@@ -81,5 +85,9 @@ public class ChargerService {
 
     private String buildAddress(JsonNode address, String x, String y, String z) {
         return address.get(x).toString().replace("\"","") + ", " + address.get(y).toString().replace("\"","") + ", " + address.get(z).toString().replace("\"","");
+    }
+
+    private double getDistance(Charger charger, double latitude, double longitude) {
+        return Math.sqrt(Math.pow(charger.getLatitude() - latitude, 2) + Math.pow(charger.getLongitude() - longitude, 2));
     }
 }
