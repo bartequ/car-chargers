@@ -7,5 +7,4 @@ import pl.edu.agh.kt.model.Charger;
 @Repository
 public interface ChargerRepository extends JpaRepository<Charger, Integer> {
 
-//     Optional<List<Charger>> findInArea(double latitude, double longitude);
 }

@@ -19,14 +19,14 @@ public class ChargerController {
     }
 
     @PostMapping("kt/charger")
-    public int addCharger(@RequestBody Charger charger) throws Exception {
+    public Integer addCharger(@RequestBody Charger charger) throws Exception {
         String address = chargerService.localizeAddress(charger.getLatitude(), charger.getLongitude());
         charger.setAddress(address);
         return chargerService.addCharger(charger);
     }
 
     @GetMapping("/kt/{id}/chargerDetails")
-    public ChargerDetails getChargerDetails(@PathVariable int id) {
+    public ChargerDetails getChargerDetails(@PathVariable Integer id) {
         return chargerService.getChargerDetails(id);
     }
 

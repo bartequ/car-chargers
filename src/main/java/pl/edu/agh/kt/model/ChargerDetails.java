@@ -2,17 +2,17 @@ package pl.edu.agh.kt.model;
 
 public class ChargerDetails {
 
-    private int id;
+    private Integer id;
 
     private String address;
 
-    private float rating;
+    private Float rating;
 
     private String name;
 
     private String cost;
 
-    public ChargerDetails(int id, String address, float rating, String name, String cost) {
+    public ChargerDetails(Integer id, String address, Float rating, String name, String cost) {
         this.id = id;
         this.address = address;
         this.rating = rating;
@@ -20,11 +20,11 @@ public class ChargerDetails {
         this.cost = cost;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -36,11 +36,11 @@ public class ChargerDetails {
         this.address = address;
     }
 
-    public float getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 

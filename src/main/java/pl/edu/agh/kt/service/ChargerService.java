@@ -27,12 +27,12 @@ public class ChargerService {
         this.chargerRepository = chargerRepository;
     }
 
-    public int addCharger(Charger charger) {
+    public Integer addCharger(Charger charger) {
         chargerRepository.save(charger);
         return charger.getId();
     }
 
-    public ChargerDetails getChargerDetails(int id)  {
+    public ChargerDetails getChargerDetails(Integer id)  {
         return chargerRepository
                 .findById(id)
                 .map(c -> new ChargerDetails(c.getId(), c.getAddress(), c.getRating(), c.getName(), c.getCost()))
