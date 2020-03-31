@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 public class ChargerController {
 
-    //TODO change name of endpoints
     private ChargerService chargerService;
 
     @Autowired
@@ -34,5 +33,10 @@ public class ChargerController {
     @GetMapping("/kt")
     public List<Charger> getChargerIdInArea(@RequestParam double latitude, @RequestParam double longitude) {
         return chargerService.getChargerIdInArea(latitude, longitude);
+    }
+
+    @GetMapping("/test")
+    public String testEndpoint() {
+        return "Connection to car chargers backend successful";
     }
 }
