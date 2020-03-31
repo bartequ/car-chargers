@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  car-chargers-db:
+    container_name: car-chargers-db
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=dupa
+      - POSTGRES_DB=ladowarki
+
+  car-chargers:
+    container_name: car-chargers
+    image: bszabat/car-chargers:0.0.2
+    ports:
+      - "80:8081"
+    depends_on:
+      - car-chargers-db
+    links:
+      - car-chargers-db
